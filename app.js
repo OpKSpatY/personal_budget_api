@@ -20,7 +20,7 @@ class Banco{
   
   getNextId(){
     let proximoId = localStorage.getItem("id")
-    return (parseInt(proximoId) + 1);
+    return parseInt(parseInt(proximoId) + 1);
   } 
   
   gravar(dado){
