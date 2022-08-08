@@ -44,6 +44,6 @@ function cadastrarDespesa() {
   console.log(ano.value, mes.value, dia.value, tipo.value, descricao.value, valor.value)
 
   let despesa = new Despesa(ano,mes,dia,tipo,descricao,valor);
-  console.log(despesa);
+  banco.gravar(despesa);
 }
 
