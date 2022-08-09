@@ -51,14 +51,34 @@ function cadastrarDespesa() {
   let tipo = document.getElementById('tipo')
   let descricao = document.getElementById('descricao')
   let valor = document.getElementById('valor')
-  
+  let modalColor = document.getElementById('modalColor')
+  let modalTitle = document.getElementById('modalLabel')
+  let modalText = document.getElementById('modalText')
+  let modalFooter = document.getElementById('modalFooter')
   let despesa = new Despesa(ano.value,mes.value,dia.value,tipo.value,descricao.value,valor.value);
 
   if(despesa.validaDados()){
+    // DIALOG DE SUCESSO
     banco.gravar(despesa);
+
+    modalTitle.innerHTML = "Seus dados foram adicionados!";
+    modalText.innerHTML = "Sucesso! Seus dados foram adicionados à base de dados."
+    modalFooter.innerHTML = "Voltar";
+    modalColor.className = 'modal-header text-success'
+    modalFooter.classname = 'btn btn-success'
+    
+    $("#modalReferencia").modal("show")
   }
   else{
-    console.log("Dados inválidos")
+    // DIALOG DE ERRO
+
+    modalColor.className = "modal-header text-danger";
+    modalTitle.innerHTML = "Ocorreu um erro... :(";
+    modalText.innerHTML = "Seus dados não foram adicionados, por favor tente novamente!"
+    modalFooter.innerHTML = "Voltar e corrigir";
+    modalFooter.classname = 'btn btn-danger'
+
+    $("#modalReferencia").modal("show")
   }
 }
 
