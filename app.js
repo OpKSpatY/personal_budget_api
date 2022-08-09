@@ -13,6 +13,9 @@ class Despesa{
       if(this[d] == undefined || this[d] == "" || this[d] == null){
         return false;
       }
+      if(this[d] === "Tipo"){
+        return false;
+      }
     }
     return true;
   }
@@ -56,6 +59,9 @@ class Banco{
     }
     return despesas;
   }
+  pesquisar(despesa){
+    console.log(despesa)
+  }
 }
 
 let banco  = new Banco();
@@ -85,6 +91,13 @@ function cadastrarDespesa() {
     modalFooter.classname = 'btn btn-success'
     
     $("#modalReferencia").modal("show")
+
+    this.mes.value = "";
+    this.dia.value = "";
+    this.tipo.value = "";
+    this.descricao.value = "";
+    this.valor.value = "";
+
   }
   else{
     // DIALOG DE ERRO
@@ -100,9 +113,56 @@ function cadastrarDespesa() {
 
 }
 
+
 function carregaListaDespesas(){
   let despesas
 
   despesas = banco.recuperarRegistros()
-  console.log(despesas);
+
+  var listaDespesas = document.getElementById('listaDespesas')
+
+  // percorrer, utilizando uma função de callback, e listar todos os elementos de forma dinâmica
+  despesas.forEach(function(d){ // funções de callback são caracterizadas como essa ao lado 
+    // criando as linhas na tabela
+    let linha = listaDespesas.insertRow();
+    function checkType(){
+      switch(d.tipo){
+          case "1": 
+            d.tipo = "Alimentação"
+            break;
+          case "2":
+            d.tipo = "Educação"
+            break;
+          case "3":
+            d.tipo = "Lazer"
+            break;
+          case 4:
+            d.tipo = "Saúde"
+            break;
+          case 5: 
+            d.tipo = "Transporte"
+            break
+        }
+    }
+    checkType();  
+    // criando as colunas
+    linha.insertCell(0).innerHTML = `${d.dia}/${d.mes}/${d.ano}`  
+    linha.insertCell(1).innerHTML = d.tipo
+    linha.insertCell(2).innerHTML = d.descricao
+    linha.insertCell(3).innerHTML = d.valor
+  })
+
+}
+
+function pesquisarDespesa(){
+  let ano = document.getElementById('ano').value;
+  let mes = document.getElementById('mes').value;
+  let dia = document.getElementById('dia').value;
+  let tipo = document.getElementById('tipo').value;
+  let descricao = document.getElementById('descricao').value;
+  let valor = document.getElementById('valor').value;
+
+  let despesa = new Despesa(ano, mes, dia, tipo, descricao, valor);
+  
+  banco.pesquisar(despesa);
 }
