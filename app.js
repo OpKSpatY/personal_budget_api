@@ -18,14 +18,16 @@ class Banco{
     }
   }
   
-  getNextId(){
+  getProximoId(){
     let proximoId = localStorage.getItem("id")
-    return parseInt(parseInt(proximoId) + 1);
+    return parseInt(proximoId) + 1
   } 
   
   gravar(dado){
-    let id = this.getNextId();
+    let id = this.getProximoId();
+
     localStorage.setItem(id, JSON.stringify(dado));
+
     localStorage.setItem("id", id);
   }
 }
@@ -33,15 +35,16 @@ class Banco{
 let banco  = new Banco();
 
 function cadastrarDespesa() {
-
+  
   let ano = document.getElementById('ano')
   let mes = document.getElementById('mes')
   let dia = document.getElementById('dia')
   let tipo = document.getElementById('tipo')
   let descricao = document.getElementById('descricao')
   let valor = document.getElementById('valor')
-
+  
   let despesa = new Despesa(ano.value,mes.value,dia.value,tipo.value,descricao.value,valor.value);
+  
   banco.gravar(despesa);
 }
 
