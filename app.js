@@ -13,9 +13,6 @@ class Despesa {
       if (this[d] == undefined || this[d] == "" || this[d] == null) {
         return false;
       }
-      if (this[d] === "Tipo") {
-        return false;
-      }
     }
     return true;
   }
@@ -55,6 +52,8 @@ class Banco {
       if (despesa === null) {
         continue;
       }
+
+      despesa.id = i;
       despesas.push(despesa)
     }
     return despesas;
@@ -123,6 +122,10 @@ class Banco {
     }
 
     return despesasFiltradas;
+  }
+
+  remover(id){
+    localStorage.removeItem(id)
   }
 }
 
@@ -214,6 +217,21 @@ function carregaListaDespesas(despesas = Array(), filtro = false ){
     linha.insertCell(1).innerHTML = d.tipo
     linha.insertCell(2).innerHTML = d.descricao
     linha.insertCell(3).innerHTML = d.valor
+
+    // botão para excluir
+
+    let btn = document.createElement("button")
+    btn.className = "btn btn-danger"
+    btn.innerHTML = '<i class="fas fa-times"></i>'
+    btn.id = `id_despesa_${d.id}`
+
+    // remover uma despesa
+    btn.onclick = function() {
+      let id = this.id.replace("id_despesa_","")
+      banco.remover(id)
+      window.location.reload()
+    }
+    linha.insertCell(4).append(btn)
   })
 
 }
@@ -229,5 +247,5 @@ function pesquisarDespesa() {
   let despesa = new Despesa(ano, mes, dia, tipo, descricao, valor);
 
   let despesas = banco.pesquisar(despesa);
-  carregaListaDespesas(despesas);
+  carregaListaDespesas(despesas, true);
 }
